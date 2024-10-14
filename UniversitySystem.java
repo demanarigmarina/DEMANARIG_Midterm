@@ -1,97 +1,143 @@
-public class Person {
-    protected String fullName;
-    protected int age;
+import java.util.ArrayList;
+import java.util.List;
 
-    // Constructor to set up a person's name and age
-    public Person(String fullName, int age) {
-        this.fullName = fullName;
-        this.age = age;
+// Person class (Base Class)
+class Person {
+    private String name;
+    private int age;
+
+    public Person(String fullName, int personAge) {
+        this.name = fullName;
+        this.age = personAge;
     }
 
-    // A method that will show basic details about a person
-    public void showDetails() {
-        System.out.println("Full Name: " + fullName);
+    public void showInfo() {
+        System.out.println("Name: " + name);
         System.out.println("Age: " + age);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
 }
 
-// The Student class extends Person, meaning it inherits all its features
+// Student class (inherits from Person)
 class Student extends Person {
-    private String id;  
-    private String program;  
-    private int totalUnits;  
-    private final int costPerUnit = 1000; 
+    private String studentID;
+    private String course;
+    private int unitsTaken;
+    private static final int COST_PER_UNIT = 1000;
 
-    // Constructor that handles setting up everything specific to a student
-    public Student(String fullName, int age, String id, String program, int totalUnits) {
-        super(fullName, age);  
-        this.id = id;
-        this.program = program;
-        this.totalUnits = totalUnits;
+    public Student(String name, int age, String id, String courseEnrolled, int units) {
+        super(name, age);
+        this.studentID = id;
+        this.course = courseEnrolled;
+        this.unitsTaken = units;
     }
 
-    // This method calculates how much the student owes based on their units
-    public double computeTotalFee() {
-        return totalUnits * costPerUnit;
+    public double computeTotalFees() {
+        return unitsTaken * COST_PER_UNIT;
     }
 
-    // Here, we override the showDetails method to add student-specific info
     @Override
-    public void showDetails() {
-        super.showDetails();  
-        System.out.println("Student ID: " + id);
-        System.out.println("Program: " + program);
-        System.out.println("Units Enrolled: " + totalUnits);
-        System.out.println("Total Fee: " + computeTotalFee());
+    public void showInfo() {
+        super.showInfo();
+        System.out.println("Student ID: " + studentID);
+        System.out.println("Course: " + course);
+        System.out.println("Units: " + unitsTaken);
+        System.out.println("Total Fees: $" + computeTotalFees());
     }
 }
 
-// The Instructor class also extends Person, but it focuses on teacher-related info
+// Instructor class (inherits from Person)
 class Instructor extends Person {
-    private String empId;  
-    private String department;  
-    private double monthlySalary;  
+    private String employeeID;
+    private String department;
+    private double salary;
 
-    // Constructor that sets up the instructor's details
-    public Instructor(String fullName, int age, String empId, String department, double monthlySalary) {
-        super(fullName, age);  
-        this.empId = empId;
-        this.department = department;
-        this.monthlySalary = monthlySalary;
+    public Instructor(String name, int age, String empID, String dept, double empSalary) {
+        super(name, age);
+        this.employeeID = empID;
+        this.department = dept;
+        this.salary = empSalary;
     }
 
-    // This method overrides the original to show extra info about the instructor
     @Override
-    public void showDetails() {
-        super.showDetails();  
-        System.out.println("Employee ID: " + empId);
+    public void showInfo() {
+        super.showInfo();
+        System.out.println("Employee ID: " + employeeID);
         System.out.println("Department: " + department);
-        System.out.println("Salary: $" + monthlySalary);
+        System.out.println("Salary: $" + salary);
     }
 }
 
-// Main class that puts everything together in the university system
+// UniversityManagement class to manage students and instructors
+class UniversityManagement {
+    private List<Student> students;
+    private List<Instructor> instructors;
+
+    public UniversityManagement() {
+        students = new ArrayList<>();
+        instructors = new ArrayList<>();
+    }
+
+    // Add a student to the system
+    public void addStudent(Student student) {
+        students.add(student);
+        System.out.println("Student " + student.getName() + " added.");
+    }
+
+    // Add an instructor to the system
+    public void addInstructor(Instructor instructor) {
+        instructors.add(instructor);
+        System.out.println("Instructor " + instructor.getName() + " added.");
+    }
+
+    // Show all students' information
+    public void showAllStudents() {
+        System.out.println("\n--- Students Information ---");
+        for (Student student : students) {
+            student.showInfo();
+            System.out.println(); // Line break for readability
+        }
+    }
+
+    // Show all instructors' information
+    public void showAllInstructors() {
+        System.out.println("\n--- Instructors Information ---");
+        for (Instructor instructor : instructors) {
+            instructor.showInfo();
+            System.out.println(); // Line break for readability
+        }
+    }
+}
+
+// Main class to demonstrate the system functionality
 public class UniversitySystem {
-
-    // This method can take any Person object (Student or Instructor) and display their details
-    public static void displayPersonInfo(Person person) {
-        person.showDetails();  
-        System.out.println("================================");
-    }
-
     public static void main(String[] args) {
-        // Let's create two students with different details
-        Student s1 = new Student("Marina C. Demanarig", 20, "231001891", "Computer Engineering", 21);
-        Student s2 = new Student("Jungkook Jeon", 22, "231001997", "Software Engineering", 18);
+        // Creating a UniversityManagement object to manage students and instructors
+        UniversityManagement university = new UniversityManagement();
 
-        // Create two instructors with their specific info
-        Instructor i1 = new Instructor("Engr. Tanya C. Jovillano", 27, "EMP2856", "Engineering", 75000);
-        Instructor i2 = new Instructor("Dr. Namjoon Kim", 30, "EMP1294", "Mathematics", 85000);
+        // Creating and adding Student objects
+        Student student1 = new Student("Yomi Rose Galve", 19, "231005392", "Computer Engineering", 4);
+        Student student2 = new Student("Marina Demanarig", 20, "231001891", "Software Engineering", 6);
+        
+        university.addStudent(student1);
+        university.addStudent(student2);
 
-        // We display the details of each person, whether they are a student or instructor
-        displayPersonInfo(s1);
-        displayPersonInfo(s2);
-        displayPersonInfo(i1);
-        displayPersonInfo(i2);
+        // Creating and adding Instructor objects
+        Instructor instructor1 = new Instructor("Engr. Tanya C. Jovillano", 28, "EMP211", "Computer Science", 85000);
+        Instructor instructor2 = new Instructor("Engr. Gela Caning", 28, "EMP213", "Computer Science", 85000);
+        
+        university.addInstructor(instructor1);
+        university.addInstructor(instructor2);
+
+        // Displaying all students' and instructors' information
+        university.showAllStudents();
+        university.showAllInstructors();
     }
-}}
+}
